@@ -49,9 +49,18 @@ def build_graph_from_chunks(
     chunks: Sequence[str],
     tau: float,
     min_edges_per_node: int = 0,
+    top_k: int | None = None,
     graph_cls: Type[Graph] | None = None,
 ) -> Graph:
-    """Convert input text chunks into a similarity graph."""
+    """Convert input text chunks into a similarity graph.
+
+    Args:
+        chunks: Text snippets to embed.
+        tau: Cosine similarity threshold for edge creation.
+        min_edges_per_node: Fallback minimum degree via strongest neighbor.
+        top_k: Optional cap on the number of outgoing edges per node.
+        graph_cls: Dependency injection hook for testing.
+    """
 
     graph_type = Graph if graph_cls is None else graph_cls
     graph = graph_type()
@@ -66,15 +75,40 @@ def build_graph_from_chunks(
     for idx in range(n):
         graph.add_node(idx)
 
+    limit = None if top_k is None or top_k <= 0 else int(top_k)
+
+    if limit is None:
+        for i in range(n):
+            sim[i, i] = 0.0
+            row = sim[i]
+            for j in range(i + 1, n):
+                if row[j] >= tau:
+                    graph.add_edge(i, j, float(row[j]))
+
+            if min_edges_per_node > 0 and not graph.neighbors(i):
+                j_star = int(np.argmax(row))
+                best = float(row[j_star])
+                if best > 0:
+                    graph.add_edge(i, j_star, best)
+        return graph
+
     for i in range(n):
-        sim[i, i] = 0.0
-        for j in range(i + 1, n):
-            if sim[i, j] >= tau:
-                graph.add_edge(i, j, float(sim[i, j]))
+        row = sim[i].copy()
+        row[i] = 0.0
+        sorted_idx = np.argsort(-row)
+        edges_added = 0
+
+        for j in sorted_idx:
+            if row[j] < tau:
+                break
+            graph.add_edge(i, int(j), float(row[j]))
+            edges_added += 1
+            if edges_added >= limit:
+                break
 
         if min_edges_per_node > 0 and not graph.neighbors(i):
-            j_star = int(np.argmax(sim[i]))
-            best = float(sim[i, j_star])
+            j_star = int(np.argmax(row))
+            best = float(row[j_star])
             if best > 0:
                 graph.add_edge(i, j_star, best)
 

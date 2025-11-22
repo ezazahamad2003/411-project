@@ -49,6 +49,12 @@ def parse_args() -> argparse.Namespace:
         default=1,
         help="Ensure each node has at least this many edges by linking to top neighbors.",
     )
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=5,
+        help="Maximum number of strongest neighbors to keep per node (<=0 to disable).",
+    )
     return parser.parse_args()
 
 
@@ -121,7 +127,10 @@ def main() -> None:
         raise ValueError(f"No chunks found in {chunk_path}")
 
     graph = build_graph_from_chunks(
-        chunks, tau=args.tau, min_edges_per_node=args.min_edges_per_node
+        chunks,
+        tau=args.tau,
+        min_edges_per_node=args.min_edges_per_node,
+        top_k=args.top_k,
     )
     labels = chinese_whispers(graph, max_iterations=args.max_iterations)
     clusters = invert_labels(labels)
