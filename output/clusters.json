@@ -1,0 +1,77 @@
+{
+  "tau": 0.3,
+  "max_iterations": 20,
+  "num_nodes": 17,
+  "num_edges": 13,
+  "clusters": [
+    {
+      "label": 16,
+      "node_indices": [
+        9,
+        10,
+        11,
+        12,
+        16
+      ],
+      "texts": [
+        "Roasting vegetables with rosemary and olive oil for a hearty dinner.",
+        "Perfecting a sourdough loaf with a longer overnight ferment.",
+        "Simmering tomato basil soup while whisking in cream at the end.",
+        "Experimenting with chili crisp toppings on homemade dumplings.",
+        "Photographing street markets while tasting new fruits in Bangkok."
+      ]
+    },
+    {
+      "label": 6,
+      "node_indices": [
+        0,
+        5,
+        6,
+        8
+      ],
+      "texts": [
+        "Writing Python scripts that analyze stock prices with pandas.",
+        "Practicing free throws and defensive rotations before the basketball tournament.",
+        "Analyzing soccer match footage to improve pressing strategy.",
+        "Fans celebrated as the baseball team clinched the playoff series."
+      ]
+    },
+    {
+      "label": 13,
+      "node_indices": [
+        7,
+        13,
+        14,
+        15
+      ],
+      "texts": [
+        "The local running club planned tempo runs along the river trail.",
+        "Backpacking through Patagonia and journaling each glacier vista.",
+        "Researching sleeper trains across Japan for a spring itinerary.",
+        "Mapping coastal hikes along the Oregon shoreline for a weekend trip."
+      ]
+    },
+    {
+      "label": 4,
+      "node_indices": [
+        1,
+        4
+      ],
+      "texts": [
+        "Training a transformer model with PyTorch on cloud GPUs.",
+        "Designing SQL schemas for an analytics warehouse migration."
+      ]
+    },
+    {
+      "label": 3,
+      "node_indices": [
+        2,
+        3
+      ],
+      "texts": [
+        "Debugging a REST API built with FastAPI and uvicorn.",
+        "Refactoring a JavaScript front-end to use React hooks effectively."
+      ]
+    }
+  ]
+}

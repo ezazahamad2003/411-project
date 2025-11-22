@@ -1,0 +1,16 @@
+# Python virtual environments
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Environment secrets
+.env
+
+# IDE / tooling artifacts
+.cursor/
+.DS_Store
+
+
